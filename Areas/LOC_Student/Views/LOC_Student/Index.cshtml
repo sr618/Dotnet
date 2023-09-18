@@ -1,0 +1,97 @@
+﻿@model dbareas.Areas.LOC_Student.Models.StudentModel;
+<div class="form-outline mb-4">
+    <label class="form-label" for="form3Example1q"><span class="text-danger">*</span>Country</label>
+    <select class="form-control" asp-for="CountryId" asp-items="@(new SelectList(ViewBag.Country,"CountryId","CountryName"))" onchange="fnonStateChange();">
+        <option value="" disabled selected>Select Country</option>
+    </select>
+    @* <span asp-validation-for="CountryId" class="text-danger"></span> *@
+</div>
+
+<div class="form-outline mb-4">
+    <label class="form-label" for="form3Example1q"><span class="text-danger">*</span>State</label>
+    <select class="form-control" asp-for="StateId" asp-items="@(new SelectList(ViewBag.StateList,"StateId","StateName"))" onchange="fnonCityChange();">
+        <option value="" disabled selected>Select State</option>
+    </select>
+    @* <span asp-validation-for="StateId" class="text-danger"></span>*@ 
+</div>
+
+<div class="form-outline mb-4">
+    <label class="form-label" for="form3Example1q">City</label>
+    <select class="form-control" asp-for="CityId" asp-items="@(new SelectList(ViewBag.CityList,"CityId","CityName"))">
+        <option value="" disabled selected>Select City</option>
+    </select>
+</div> 
+
+
+@section Scripts{
+    <script>
+        function fnonStateChange() {
+            var CountryId = $("#CountryId").val();
+
+            if (CountryId != 0) {
+                $("#StateId").empty();
+                $("#StateId").append($("<option></option>").val("").html("Select State"));
+                // $("#CityId").empty();
+                // $("#CityId").append($("<option></option>").val("").html("Select City"));
+                $.ajax(
+                    {
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "@Url.Action("DropDownByCountry", "LOC_Student")" + "?CountryId=" + CountryId,
+                        date: {},
+                        dataType: "json",
+                        success: function (Result) {
+
+                            $.each(Result,
+                                function (key, value) {
+                                    $("#StateId").append($("<option></option>").val(value.StateId).html(value.stateName));
+                                });
+                        },
+                        error: function (r) {
+                            alert("Error while loading DropDwon.");
+                        }
+                    });
+            }
+            else {
+                $("#StateId").empty();
+                $("#StateId").append($("<option></option>").val("").html("Select State"));
+                $("#CityId").empty();
+                $("#CityId").append($("<option></option>").val("").html("Select City"));
+            }
+        }
+
+    function fnonCityChange() {
+        var StateId = $("#StateId").val();
+
+        if (StateId !=0) {
+            $("#CityId").empty();
+            $("#CityId").append($("<option></option>").val("").html("Select City"));
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Action("DropDownByState", "LOC_Student")" + "?StateId=" + StateId,
+                    date: {},
+                    dataType: "json",
+                    success: function (Result) {
+
+                        $.each(Result,
+                            function (key, value) {
+                                $("#CityId").append($("<option></option>").val(value.CityId).html(value.cityName));
+                            });
+                    },
+                    error: function (r) {
+                        alert("Error while loading DropDwon.");
+                    }
+                });
+        }
+        else {
+            $("#CityId").empty();
+            $("#CityId").append($("<option></option>").val("").html("Select City"));
+        }
+    }
+</script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

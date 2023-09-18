@@ -1,0 +1,13 @@
+﻿@model dbareas.Areas.LOC_Branch.Models.BranchModel;
+
+
+<form asp-action="save" method="post" asp-area="LOC_Branch" asp-controller="LOC_Branch">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Branch Name</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="BranchName">
+        <label for="exampleFormControlInput1x">Branch Code</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="BranchCode">
+        <input type="hidden" class="form-control" id="exampleFormControlInput1" asp-for="BranchId">
+        <input type="submit" value="submit" />
+    </div>
+</form>

@@ -1,0 +1,17 @@
+﻿@model dbareas.Areas.LOC_City.Models.CityModel;
+
+@* *@
+
+<form method="post" asp-action="Save" asp-area="LOC_City" asp-controller="LOC_City">
+    .
+    @Html.HiddenFor(x => x.CityID)
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Country Name</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="CityName">
+        <label for="exampleFormControlInput1x">Country Code</label>
+       <select class="form-control" asp-for="StateId" asp-items="@(new SelectList(ViewBag.state,"StateId","StateName"))"></select>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="CityCode">
+@*     <input type="hidden" class="form-control" id="exampleFormControlInput1" asp-for="CityID">  *@
+        <input type="submit" value="submit" />
+    </div>
+</form>

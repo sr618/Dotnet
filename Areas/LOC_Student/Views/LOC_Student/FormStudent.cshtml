@@ -1,0 +1,91 @@
+﻿@*   <div class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example1q"><span class="text-danger">*</span>Country</label>
+                                    <select class="form-control" asp-for="CountryID" asp-items="@(new SelectList(ViewBag.CountryList,"CountryID","CountryName"))" onchange="fnonStateChange();">
+                                        <option value="">Select Country</option>
+                                    </select>
+                                    <span asp-validation-for="CountryID" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example1q"><span class="text-danger">*</span>State</label>
+                                    <select class="form-control" asp-for="StateID" asp-items="@(new SelectList(ViewBag.StateList,"StateID","StateName"))" onchange="fnonCityChange();">
+                                        <option value="">Select State</option>
+                                    </select>
+                                    <span asp-validation-for="StateID" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <label class="form-label" for="form3Example1q">City</label>
+                                    <select class="form-control" asp-for="CityID" asp-items="@(new SelectList(ViewBag.CityList,"CityID","CityName"))">
+                                        <option value="">Select City</option>
+                                    </select>
+                                </div>
+
+<script>
+    function fnonStateChange() {
+        var CountryID = $("#CountryID").val();
+
+        if (CountryID !== "") {
+            $("#StateID").empty();
+            $("#StateID").append($("<option></option>").val("").html("Select State"));
+            $("#CityID").empty();
+            $("#CityID").append($("<option></option>").val("").html("Select City"));
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Action("DropDownByCountry", "SEC_User")" + "?CountryID=" + CountryID,
+                    date: {},
+                    dataType: "json",
+                    success: function (Result) {
+
+                        $.each(Result,
+                            function (key, value) {
+                                $("#StateID").append($("<option></option>").val(value.stateID).html(value.stateName));
+                            });
+                    },
+                    error: function (r) {
+                        alert("Error while loading DropDwon.");
+                    }
+                });
+        }
+        else {
+            $("#StateID").empty();
+            $("#StateID").append($("<option></option>").val("").html("Select State"));
+            $("#CityID").empty();
+            $("#CityID").append($("<option></option>").val("").html("Select City"));
+        }
+    }
+
+    function fnonCityChange() {
+        var StateID = $("#StateID").val();
+
+        if (StateID !== "") {
+            $("#CityID").empty();
+            $("#CityID").append($("<option></option>").val("").html("Select City"));
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    url: "@Url.Action("DropDownByState", "SEC_User")" + "?StateID=" + StateID,
+                    date: {},
+                    dataType: "json",
+                    success: function (Result) {
+
+                        $.each(Result,
+                            function (key, value) {
+                                $("#CityID").append($("<option></option>").val(value.cityID).html(value.cityName));
+                            });
+                    },
+                    error: function (r) {
+                        alert("Error while loading DropDwon.");
+                    }
+                });
+        }
+        else {
+            $("#CityID").empty();
+            $("#CityID").append($("<option></option>").val("").html("Select City"));
+        }
+    }
+</script>
+ *@

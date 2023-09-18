@@ -1,0 +1,13 @@
+﻿@model dbareas.Areas.LOC_Country.Models.CountryModel;
+
+
+<form asp-action="save" method="post" asp-area="LOC_Country" asp-controller="LOC_Country">
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Country Name</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="CountryName">
+        <label for="exampleFormControlInput1x">Country Code</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="CountryCode">
+        <input type="hidden" class="form-control" id="exampleFormControlInput1" asp-for="CountryId">
+        <input type="submit" value="submit" />
+    </div>
+</form>

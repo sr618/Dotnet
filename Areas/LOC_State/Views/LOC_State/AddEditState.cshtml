@@ -1,0 +1,17 @@
+﻿@model dbareas.Areas.LOC_State.Models.StateModel;
+@* *@
+
+<form  method="post" asp-action="Save" asp-area="LOC_State" asp-controller="LOC_State">.
+    @Html.HiddenFor(x => x.StateId)
+    <div class="form-group">
+        <label for="exampleFormControlInput1">Country Name</label>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="StateName">
+        <label for="exampleFormControlInput1x">Country Code</label>
+        <select asp-for="CountryID"  asp-items="@(new SelectList(ViewBag.Country,"CountryId","CountryName"))" id="inputState" class="form-select">
+            <option>Select State---</option>
+        </select>
+        <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="StateCode">
+        <input type="hidden" class="form-control" id="exampleFormControlInput1" asp-for="StateId">
+        <input type="submit" value="submit" />
+    </div>
+</form>

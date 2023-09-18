@@ -1,0 +1,12 @@
+﻿@model dbareas.Areas.LOC_Student.Models.StudentModel;
+<h1>
+    @TempData["MSG"]
+</h1>
+
+<form method="post" asp-action="save" asp-controller="LOC_Student" asp-area="LOC_Student">
+
+    <input type="text" asp-for="StudentName" />
+    <input type="text" asp-for="StudentEmail"/>
+    <input type="email" asp-for="StudentEmail"/>
+    <input type="submit" value="submit"/>
+</form>
