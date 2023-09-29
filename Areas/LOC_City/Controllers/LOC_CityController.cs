@@ -9,14 +9,20 @@ namespace dbareas.Areas.LOC_City.Controllers
 {
     [Area("LOC_City")]
     [Route("LOC_City/{Controller}/{action}")]
-
     public class LOC_CityController : Controller
     {
+        #region Constructor
+
         private IConfiguration configuration;
         public LOC_CityController(IConfiguration _configuration)
         {
             this.configuration = _configuration;
         }
+
+        #endregion
+
+        #region Index Action
+
         public IActionResult Index()
         {
             SqlConnection conn = new SqlConnection(this.configuration.GetConnectionString("constr"));
@@ -27,10 +33,13 @@ namespace dbareas.Areas.LOC_City.Controllers
             DataTable dt = new DataTable();
             SqlDataReader dr = sqlCommand.ExecuteReader();
             dt.Load(dr);
-    
             return View(dt);
-
         }
+
+        #endregion
+
+        #region AddEditCity Action
+
         public IActionResult AddEditCity(int? id)
         {
             SqlConnection conn = new SqlConnection(this.configuration.GetConnectionString("constr"));
@@ -69,19 +78,20 @@ namespace dbareas.Areas.LOC_City.Controllers
                 CityModel model = new CityModel();
                 foreach (DataRow drx in dtx.Rows)
                 {
-                    //     model.StateId = int.Parse(dr["StateId"].ToString());
                     model.CityName = drx["CityName"].ToString();
                     model.CityCode = drx["CityCode"].ToString();
                     model.StateId = Convert.ToInt32(drx["StateID"]);
-
-
                 }
                 return View(model);
             }
         }
+
+        #endregion
+
+        #region Save Action
+
         public IActionResult Save(CityModel modelCity)
         {
-
             string connectionstr = "Data Source=SHUBHAM\\SQLEXPRESS01;Initial Catalog=22010101618;Integrated Security=True";
             Console.WriteLine(connectionstr);
             SqlDatabase sqlDatabase = new SqlDatabase(connectionstr);
@@ -89,7 +99,6 @@ namespace dbareas.Areas.LOC_City.Controllers
 
             if (modelCity.StateId == 0)
             {
-
                 connection.Open();
                 SqlCommand dbCommand = new SqlCommand("PR_City_Insert", connection);
                 dbCommand.CommandType = CommandType.StoredProcedure;
@@ -99,7 +108,6 @@ namespace dbareas.Areas.LOC_City.Controllers
                 dbCommand.ExecuteNonQuery();
                 connection.Close();
                 return RedirectToAction("Index");
-
             }
             else
             {
@@ -116,7 +124,6 @@ namespace dbareas.Areas.LOC_City.Controllers
             }
         }
 
-
+        #endregion
     }
 }
-
