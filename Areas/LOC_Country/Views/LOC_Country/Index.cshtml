@@ -1,5 +1,7 @@
-﻿@using System.Data;
-@model DataTable;
+﻿
+@using System.Data;
+@model  dbareas.Areas.LOC_Country.Models.Mainmodel;
+
 <a type="button" asp-action="AddEditCountry" asp-area="LOC_Country" asp-controller="LOC_Country" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</a>
                      
     <span class="icon text-white-50">
@@ -8,6 +10,10 @@
     <span class="text">Add New</span>
 </a>
 <div class="card-body">
+  <form method="post" asp-action="Search" asp-area="LOC_Country" asp-controller="LOC_Country">
+    <input type="text" name="CountryName" id="CountryName" class="form-control"  placeholder="Search for..."/>
+    <input type="submit" value="submit"/>
+  </form>
     <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
             <thead>
@@ -18,8 +24,8 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(DataRow dr in Model.Rows){
-                <tr>
+         @foreach(DataRow dr in Model.DataTable.Rows){
+            <tr>
                     <td>@dr["CountryName"]</td>
                         <td>@dr["CountryCode"]</td>
                         <td>
@@ -38,4 +44,23 @@
         </table>
     </div>
     </div>
+    
+@section Scripts {
+    <script>
+        // Bind the onchangefun function to the change event of the input field
+        $("#CountryName").on("change", onchangefun);
 
+        function onchangefun() {
+            var CountryName = $("#CountryName").val();
+            $.ajax({
+                type: "POST",
+                url: "/LOC_Country/LOC_Country/Search",
+                 data: { CountryName: CountryName },
+                success: function (data) {
+                    // Update the table body with the new data
+                    $("#dataTable tbody").html(data);
+                }
+            });
+        }
+    </script>
+}

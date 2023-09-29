@@ -11,11 +11,18 @@ namespace dbareas.Areas.LOC_Branch.Controllers
     [Route("LOC_Branch/{Controller}/{action}")]
     public class LOC_BranchController : Controller
     {
+        #region Constructor
+
         private IConfiguration Configuration;
         public LOC_BranchController(IConfiguration _configuration)
         {
             Configuration = _configuration;
         }
+
+        #endregion
+
+        #region Index Action
+
         public IActionResult Index()
         {
             string connectionstr = this.Configuration.GetConnectionString("constr");
@@ -27,10 +34,13 @@ namespace dbareas.Areas.LOC_Branch.Controllers
             {
                 dt.Load(dataReader);
             }
-
-
             return View(dt);
         }
+
+        #endregion
+
+        #region Delete Action
+
         public IActionResult Delete(int id)
         {
             string connectionstr = this.Configuration.GetConnectionString("conStr");
@@ -47,9 +57,13 @@ namespace dbareas.Areas.LOC_Branch.Controllers
             connection.Close();
             return RedirectToAction("Index", "LOC_Branch", new { area = "LOC_Branch" });
         }
+
+        #endregion
+
+        #region Save Action
+
         public IActionResult Save(BranchModel modelBranch)
         {
-
             string connectionstr = this.Configuration.GetConnectionString("conStr");
             Console.WriteLine(connectionstr);
             SqlDatabase sqlDatabase = new SqlDatabase(connectionstr);
@@ -57,7 +71,6 @@ namespace dbareas.Areas.LOC_Branch.Controllers
 
             if (modelBranch.BranchId == 0)
             {
-
                 connection.Open();
                 SqlCommand dbCommand = new SqlCommand("PR_Branch_Insert", connection);
                 dbCommand.CommandType = CommandType.StoredProcedure;
@@ -66,7 +79,6 @@ namespace dbareas.Areas.LOC_Branch.Controllers
                 dbCommand.ExecuteNonQuery();
                 connection.Close();
                 return RedirectToAction("Index");
-
             }
             else
             {
@@ -82,6 +94,10 @@ namespace dbareas.Areas.LOC_Branch.Controllers
             }
         }
 
+        #endregion
+
+        #region AddEditBranch Action
+
         public IActionResult AddEditBranch(int? id)
         {
             if (id == null)
@@ -90,7 +106,6 @@ namespace dbareas.Areas.LOC_Branch.Controllers
             }
             else
             {
-
                 String connectionstr = this.Configuration.GetConnectionString("conStr");
                 DataTable dt = new DataTable();
                 SqlConnection sqlConnection = new SqlConnection(connectionstr);
@@ -111,5 +126,7 @@ namespace dbareas.Areas.LOC_Branch.Controllers
                 return View(model);
             }
         }
+
+        #endregion
     }
 }
